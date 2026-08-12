@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5175';
+
 /**
  * Subscribes to the backend telemetry stream (one frame per simulated second)
  * and exposes a command sender for the ground-operator panel.
@@ -10,7 +12,7 @@ export default function useTelemetry() {
   const sourceRef = useRef(null);
 
   useEffect(() => {
-    const source = new EventSource('/api/stream');
+    const source = new EventSource(`${API_URL}/api/stream`);
     sourceRef.current = source;
 
     source.onopen = () => setStatus('live');
@@ -29,7 +31,7 @@ export default function useTelemetry() {
 
   const sendCommand = useCallback(async (action, payload = {}) => {
     try {
-      const res = await fetch('/api/command', {
+      const res = await fetch(`${API_URL}/api/command`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action, ...payload }),
