@@ -61,6 +61,6 @@ app.post('/api/command', (req, res) => {
 
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
 
-app.listen(PORT, () => {
-  console.log(`SomaiyaSat telemetry simulator listening on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`SomaiyaSat telemetry simulator listening on port ${PORT}`);
 });
